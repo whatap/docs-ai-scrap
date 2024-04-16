@@ -41,7 +41,10 @@ def insert_data(data):
         
         # 테이블에 데이터 삽입
         response = supabase.table('whatap_java').insert(insert_data).execute()
-        print(response)
+        
+        if response['error']:
+            # Handle error
+            print(response['error'])
 
 # 데이터 삽입 함수 호출
 insert_data(json_data)
