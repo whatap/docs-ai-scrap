@@ -15,9 +15,27 @@ class Coolspider(SitemapSpider):
     name = "whatapDocs"
     sitemap_urls = ["https://docs.whatap.io/sitemap.xml"]
     sitemap_rules = [
-        ('https://docs.whatap.io/java/', 'parse'),
-        # ('/java/add-jvm-opt/batch-app', 'parse'),
-        # ('/java/dashboard-hitmap-trace', 'parse')
+        ('https://docs.whatap.io/redis/', 'parse'),
+        ('https://docs.whatap.io/mongodb/', 'parse'),
+        # ('https://docs.whatap.io/about-billing', 'parse'),
+        # ('https://docs.whatap.io/software-proxy', 'parse'),
+        # ('https://docs.whatap.io/main-ui-intro-v2', 'parse'),
+        # ('https://docs.whatap.io/best-practice-guides', 'parse'),
+        # ('https://docs.whatap.io/nodejs/', 'parse'),
+        # ('https://docs.whatap.io/python/', 'parse'),
+        # ('https://docs.whatap.io/dotnet/', 'parse'),
+        # ('https://docs.whatap.io/golang/', 'parse'),
+        # ('https://docs.whatap.io/server/', 'parse'),
+        # ('https://docs.whatap.io/postgresql/', 'parse'),
+        # ('https://docs.whatap.io/oracle/', 'parse'),
+        # ('https://docs.whatap.io/mysql/', 'parse'),
+        # ('https://docs.whatap.io/browser', 'parse'),
+        # ('https://docs.whatap.io/npm/', 'parse'),
+        # ('https://docs.whatap.io/reference/', 'parse'),
+        # ('https://docs.whatap.io/opentelemetry/', 'parse'),
+        # ('https://docs.whatap.io/url/', 'parse'),
+        # ('https://docs.whatap.io/focus/', 'parse'),
+        # ('https://docs.whatap.io/telegraf/', 'parse')
     ]
 
     def parse(self, response):
@@ -62,8 +80,9 @@ class Coolspider(SitemapSpider):
             yield result
 
             for section in sections:
+                if section.xpath('@class').get() == 'row':
+                    continue
                 # 하위 section 요소를 제외한 모든 자식 요소를 추출합니다.
-                section_content = ""
                 section_content = ""
                 for element in section.xpath('./*[not(self::section or self::h2 or self::h3 or self::h4)]/descendant-or-self::text()'):
                     text = element.get().strip()

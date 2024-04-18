@@ -16,7 +16,7 @@ openai.api_key = os.environ["OPENAI_API_KEY"]
 embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
 
 # 외부 JSON 파일 읽기
-with open('whatap-temp.json', 'r') as file:
+with open('whatap-docs.json', 'r') as file:
     json_data = json.load(file)
 
 # text = json.dumps(json_data[0], ensure_ascii=False)
@@ -40,11 +40,11 @@ def insert_data(data):
         insert_data = {'id': id, 'metadata': text, 'embedding': embedding_vector}
         
         # 테이블에 데이터 삽입
-        response = supabase.table('whatap_java').insert(insert_data).execute()
-        
-        if response['error']:
-            # Handle error
-            print(response['error'])
+        response = supabase.table('whatap_docs').insert(insert_data).execute()
+        metadata_json = json.loads(insert_data['metadata'])
+        url = metadata_json.get('url')
+        print(f"새로운 행이 성공적으로 삽입되었습니다! URL: {url}")
+
 
 # 데이터 삽입 함수 호출
 insert_data(json_data)
