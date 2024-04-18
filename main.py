@@ -2,145 +2,112 @@ import json
 import scrapy
 import re
 from scrapy.spiders import SitemapSpider
-from scrapy.spiders import Rule
-from scrapy.linkextractors import LinkExtractor
 
-class ExampleItem(scrapy.Item):
+class DocsItem(scrapy.Item):
     url = scrapy.Field()
     description = scrapy.Field()
     product = scrapy.Field()
     title = scrapy.Field()
     contents = scrapy.Field()
+    header = scrapy.Field()
 
 class Coolspider(SitemapSpider):
     name = "whatapDocs"
-    sitemap_urls = [ "https://docs.whatap.io/sitemap.xml" ]
+    sitemap_urls = ["https://docs.whatap.io/sitemap.xml"]
     sitemap_rules = [
-        ('/agent-transaction-error-stack', 'parse'),
-        # ('/agent-transaction', 'parse_options'),
-        # ('/agent-control-function', 'parse_options'),
-        # ('/agent-usage', 'parse_options'),
-        # ('/agent-network', 'parse_options'),
-        # ('/agent-performance', 'parse_options'),
-        # ('/agent-log', 'parse_options'),
-        # ('/agent-transaction', 'parse_options'),
-        # ('/agent-dbsql', 'parse_options'),
-        # ('/agent-httpcapicall', 'parse_options'),
-        # ('/agent-httpcapi', 'parse_options'),
-        # ('/agent-httpcall', 'parse_options'),
-        # ('/agent-number-of-user', 'parse_options'),
-        # ('/agent-load-amount', 'parse_options'),
-        # ('/agent-notification', 'parse_options'),
-        # ('/agent-static', 'parse_options'),
-        # ('/agent-toplogy', 'parse_options'),
-        # ('/agent-additional-option', 'parse_options'),
-        # ('/agent-shared-memory', 'parse_options'),
-        # ('/agent-webservice', 'parse_options'),
-        # ('/agent-library', 'parse_options'),
-        # ('/kubernetes/set-agent', 'parse_options'),
-        # ('/agent-dbx-settings', 'parse_options'),
-        # ('/agent-xos-settings', 'parse_options'),
-        # ('/agent-aws', 'parse_options'),
-        # ('/agent-data', 'parse_options'),
-        # ('/agent-xcub-settings', 'parse_options'),
-        # ('/log/log-java', 'parse_options'),
-        # ('opentelemetry/set-agent', 'parse_options'),
-        ('/log/log-intro', 'parse_pass'),
-        ('/log/log-flex', 'parse_pass'),
-        ('/golang/topology-settings', 'parse_pass'),
-        ('/golang/agent-troubleshooting', 'parse_pass'),
-        ('/db/db-monitoring-intro', 'parse_pass'),
-        ('/aws-log/metrics-intro', 'parse_pass'),
-        ('/apm/java-supported-spec', 'parse_pass'),
-        ('/apm/golang-supported-spec', 'parse_pass'),
-        ('/apm/application-intro', 'parse_pass'),
-        ('/whatap_guide/install_agent/server/support_env', 'parse_pass'),
-        ('/use_guide/url_monitoring/intro', 'parse_pass'),
-        ('/kr/user_guide_url', 'parse_pass'),
-        ('/kr/appendix', 'parse_pass'),
-        ('/dl-release-notes', 'parse_pass'),
-        ('/navigation/int-dashboard', 'parse_pass'),
-        ('/navigation/int-metrics-board', 'parse_pass'),
-        ('/dashboard/acw-dashboard-ds', 'parse_pass'),
-        ('/whatap_guide/install_agent/server/support_env', 'parse_pass'),
-        ('/search/', 'parse_pass'),
-        ('/license/', 'parse_pass'),
-        ('/reference', 'parse_pass'),
-        ('/release-notes/', 'parse_pass'),
-        ('', 'parse')
+        ('https://docs.whatap.io/redis/', 'parse'),
+        ('https://docs.whatap.io/mongodb/', 'parse'),
+        # ('https://docs.whatap.io/about-billing', 'parse'),
+        # ('https://docs.whatap.io/software-proxy', 'parse'),
+        # ('https://docs.whatap.io/main-ui-intro-v2', 'parse'),
+        # ('https://docs.whatap.io/best-practice-guides', 'parse'),
+        # ('https://docs.whatap.io/nodejs/', 'parse'),
+        # ('https://docs.whatap.io/python/', 'parse'),
+        # ('https://docs.whatap.io/dotnet/', 'parse'),
+        # ('https://docs.whatap.io/golang/', 'parse'),
+        # ('https://docs.whatap.io/server/', 'parse'),
+        # ('https://docs.whatap.io/postgresql/', 'parse'),
+        # ('https://docs.whatap.io/oracle/', 'parse'),
+        # ('https://docs.whatap.io/mysql/', 'parse'),
+        # ('https://docs.whatap.io/browser', 'parse'),
+        # ('https://docs.whatap.io/npm/', 'parse'),
+        # ('https://docs.whatap.io/reference/', 'parse'),
+        # ('https://docs.whatap.io/opentelemetry/', 'parse'),
+        # ('https://docs.whatap.io/url/', 'parse'),
+        # ('https://docs.whatap.io/focus/', 'parse'),
+        # ('https://docs.whatap.io/telegraf/', 'parse')
     ]
 
-    def parse_options(self, response):
-        example_item = ExampleItem()
-        example_item["url"] = response.url
-        example_item["description"] = response.xpath("//*/head/meta[@name='description']/@content").get()
-        example_item["product"] = response.xpath(
-            "//*/nav[contains(@class, 'theme-doc-breadcrumbs')]/ul/li[2]//span/text() | //*/nav[contains(@class,'menu')]/ul/li[1]//a/text()").get()
-        example_item["title"] = response.css("header h1::text").get()
-        sections = response.xpath("//*/div[contains(@class, 'theme-doc-markdown')]")
-        # contents = []
-
-        for section in sections:
-            # section_title = section.xpath(".//h2/text()").get()
-            # section_text = section.xpath(".//p/text()").get()
-            options = section.xpath(".//li")
-            options_list = []
-
-            for option in options:
-                # str 타입인지 확인한다.
-                if (type(option.xpath(".//p[2]/text()").get()) == str):
-                    if option.xpath(".//p[2]/text()").get().startswith("기본값"):
-                        default_val = option.xpath(".//p[2]/code/text()").get()
-                        default_check = True
-                    else:
-                        default_val = "Empty"
-                        default_check = False
-
-                    if default_check is True:
-                        desc_string = ''.join(option.xpath("string(.//p[3])").extract()).strip()
-                    else:
-                        desc_string = ''.join(option.xpath("string(.//p[2])").extract()).strip()
-
-                    option_name = option.xpath("./p[1]/strong/text()").get()
-                    option_type = option.xpath("./p[1]/span[@class='type']/text() | ./p[1]/span[@class='api']/text()").get()
-
-                    if option_name is not None:
-                        # option_data = option_name, desc_string
-                        option_data = {
-                            # "name": option_name,
-                            # "type": option_type,
-                            # "default": default_val,
-                            # "description": desc_string
-                            option_name: desc_string
-                        }
-                        options_list.append(option_data)
-                else:
-                    pass
-            # content_data = {
-            #     "agent_options": options_list
-            # }
-            contents = [json.dumps(item, ensure_ascii=False) for item in options_list ]
-            # contents.append(content_data)
-
-        example_item["contents"] = ", ".join(contents)
-        return example_item
-
-
     def parse(self, response):
-        example_item = ExampleItem()
-        example_item["url"] = response.url
-        example_item["description"] = response.xpath("//*/head/meta[@name='description']/@content").get()
-        example_item["product"] = response.xpath("//*/nav[contains(@class, 'theme-doc-breadcrumbs')]/ul/li[2]//span/text() | //*/nav[contains(@class,'menu')]/ul/li[1]//a/text()").get()
-        example_item["title"] = response.css("header h1::text").get()
-        context = response.css(".theme-doc-markdown.markdown *::text").getall()
-        # example_item["contents"] = " ".join(context).replace('\u200b', '')
-        cleaned_context = " ".join(context).replace('\u200b', '').replace('\u200c', '').replace('\u200d', '').replace('\n ', '')  # ZWSP, ZWNJ, ZWJ 삭제
-        # start.sh \$ \./start.sh [^>]+ (\d{8}|\w{8})
-        # Nov  16 ,  2016   3 :06:40 AM [^>]+ (\d{8})
-        # \$  node  app.js 20210309  07:45:59 .+ (\d{8})
-        reString = re.sub('\$  node  app.js 20210309  07:45:59 .+ (\d{8})', '', re.sub('Nov  16 ,  2016   3 :06:40 AM [^>]+ (\d{8})', '', re.sub('start.sh \$ \./start.sh [^>]+ (\d{8}|\w{8})', '', cleaned_context)))
-        example_item["contents"] = reString
-        return example_item
+        docs_item = DocsItem()
+        title = response.css("header h1::text").get()
+        meta_desc = response.xpath("//*/head/meta[@name='description']/@content").get()
+        product = response.xpath(
+            "//*/nav[contains(@class, 'theme-doc-breadcrumbs')]/ul/li[2]//span/text() | //*/nav[contains(@class,'menu')]/ul/li[1]//a/text()").get()
+
+        # 섹션 개수 확인
+        sections = response.xpath('//section')
+        num_sections = len(sections)
+
+        if num_sections ==  0:
+            context = response.xpath('//*/div[@class="theme-doc-markdown markdown"]').xpath('string()').get()
+            # JSON 형식으로 출력
+            result = {
+                "title": title,
+                "url": response.url,
+                "content": title + '. ' + meta_desc + ' ' + re.sub('(\\n)+', ' ', context),
+                "product": product,
+                "header": title  # 첫 번째 섹션 이전의 콘텐츠는 타이틀과 동일하다고 가정합니다.
+            }
+            yield result
+
+        if num_sections > 0:
+            # 첫 번째 섹션 이전의 모든 콘텐츠 요소 추출
+            content_elements = response.xpath('(//p | //ul | //ol | //div | //table)/section[1]/preceding-sibling::*[not(self::header)]')
+            # 첫 번째 섹션 이전의 모든 콘텐츠 추출
+            pre_sections_content = ''
+            for element in content_elements:
+                pre_sections_content += element.xpath('string()').get() + " "
+
+            # JSON 형식으로 출력
+            result = {
+                "title": title,
+                "url": response.url,
+                "content": title + '. ' + meta_desc + ' ' + re.sub('(\\n)+', ' ', re.sub(r'\u200b', '', pre_sections_content.strip())),
+                "product": product,
+                "header": title  # 첫 번째 섹션 이전의 콘텐츠는 타이틀과 동일하다고 가정합니다.
+            }
+            yield result
+
+            for section in sections:
+                if section.xpath('@class').get() == 'row':
+                    continue
+                # 하위 section 요소를 제외한 모든 자식 요소를 추출합니다.
+                section_content = ""
+                for element in section.xpath('./*[not(self::section or self::h2 or self::h3 or self::h4)]/descendant-or-self::text()'):
+                    text = element.get().strip()
+                    if text:
+                        section_content += text + " "
+                # for element in section.xpath('./*[not(self::section)]/descendant-or-self::text()'):
+                #     text = element.get().strip()
+                #     if text:
+                #         section_content += text + " "
+
+                # 섹션의 제목 추출
+                header = section.xpath('.//h2/text() | .//h3/text() | .//h3/code/text() | .//h4/text() | .//h4/span/text()').get()
+
+                if not section_content:
+                    continue
+
+                # JSON 형식으로 출력
+                result = {
+                    "url": response.url,
+                    "title": title,
+                    "content": header + '. ' + re.sub('(\\n)+', ' ', re.sub(r'\u200b', '', section_content.strip())),
+                    "product": product,
+                    "header": header
+                }
+                yield result
 
     def parse_pass(self, response):
         pass
