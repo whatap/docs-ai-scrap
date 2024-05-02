@@ -2,6 +2,7 @@ import os
 from uuid import uuid4
 import json
 import random
+import openai
 from langchain_openai import OpenAIEmbeddings
 from supabase import create_client, Client
 
