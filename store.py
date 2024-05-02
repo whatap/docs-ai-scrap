@@ -2,7 +2,6 @@ import os
 from uuid import uuid4
 import json
 import random
-import openai
 from langchain_openai import OpenAIEmbeddings
 from supabase import create_client, Client
 
@@ -44,6 +43,8 @@ def insert_data(data):
         metadata_json = json.loads(insert_data['metadata'])
         url = metadata_json.get('url')
         print(f"새로운 행이 성공적으로 삽입되었습니다! URL: {url}")
+
+print("complete!!")
 
 
 # 데이터 삽입 함수 호출
