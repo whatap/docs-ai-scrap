@@ -40,7 +40,7 @@ def insert_data(data):
         insert_data = {'id': id, 'metadata': text, 'embedding': embedding_vector}
         
         # 테이블에 데이터 삽입
-        response = supabase.table('whatap_docs').insert(insert_data).execute()
+        response = supabase.table('whatap_docs_temp').insert(insert_data).execute()
         metadata_json = json.loads(insert_data['metadata'])
         url = metadata_json.get('url')
         print(f"새로운 행이 성공적으로 삽입되었습니다! URL: {url}")

@@ -113,7 +113,7 @@ class Coolspider(SitemapSpider):
                 #         section_content += text + " "
 
                 # 섹션의 제목 추출
-                header = section.xpath('.//h2/text() | .//h3/text() | .//h3/code/text() | .//h4/text() | .//h4/span/text()').get()
+                header = section.xpath('.//h2/text() | .//h2/span/text() | .//h2/em/strong/text() | .//h2/strong/em/text() | .//h3/text() | .//h3/span/text() | .//h3/em/strong/text() | .//h3/strong/em/text() | .//h3/code/text() | .//h4/text() | .//h4/span/text() | .//h4/em/strong/text() | .//h4/strong/em/text()').get()
 
                 if not section_content:
                     continue
