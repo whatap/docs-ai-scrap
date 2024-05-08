@@ -1,0 +1,43 @@
+name: Scrapy CI
+
+on:
+  # schedule:
+    # 자동으로 매일 자정에 실행하도록 설정 (UTC 시간 기준)
+    # - cron: '0 0 * * *'
+  # push:
+  #   branches: [main]
+  # pull_request:
+  #   branches: [main]
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Deployment?"
+        default: "WhaTap"
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v2
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+          source $HOME/.poetry/env
+
+      - name: Install dependencies
+        run: |
+          poetry install
+
+      - name: Run scrapy spider
+        run: |
+          scrapy runspider --set FEED_EXPORT_ENCODING=utf-8 --set FEED_EXPORT_INDENT=2 main.py -o whatap-docs.json
+      - name: Update extracted data
+        run: |
+          cp path/to/your/extracted/whatap-docs.json .
+          git config --global user.email "kj.im@whatap.io"
+          git config --global user.name "Kijung-iM"
+          git add whatap-docs.json
+          git commit -m "Update extracted data"
+          git push origin main
