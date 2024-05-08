@@ -21,6 +21,10 @@ jobs:
       - name: Check out the code
         uses: actions/checkout@v2
 
+      - name: Delete existing extracted data
+        run: |
+          rm -f whatap-docs.json
+
       - name: Install Python
         uses: actions/setup-python@v2
         with:
@@ -41,11 +45,11 @@ jobs:
         run: |
           poetry run scrapy runspider --set FEED_EXPORT_ENCODING=utf-8 --set FEED_EXPORT_INDENT=2 main.py -o whatap-docs.json
 
-      - name: Update extracted data
+      - name: Move extracted data
         run: |
-          mv whatap-docs.json ./whatap-docs.json
+          mv whatap-docs.json ./whatap-docs-temp.json
           git config --global user.email "kj.im@whatap.io"
           git config --global user.name "Kijung-iM"
-          git add whatap-docs.json
+          git add whatap-docs-temp.json
           git commit -m "Update extracted data"
           git push origin main
