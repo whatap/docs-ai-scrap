@@ -21,15 +21,19 @@ jobs:
       - name: Check out the code
         uses: actions/checkout@v2
 
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
       - name: Install Poetry
-        uses: snok/install-poetry@v1
+        run: |
+          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+          source $HOME/.poetry/env
 
       - name: Install dependencies
         run: |
           poetry install
-
-      - name: Activate virtual environment
-        run: source $HOME/.poetry/env
 
       - name: Install Scrapy
         run: |
@@ -41,7 +45,7 @@ jobs:
 
       - name: Update extracted data
         run: |
-          cp path/to/your/extracted/whatap-docs.json .
+          cp whatap-docs.json .
           git config --global user.email "kj.im@whatap.io"
           git config --global user.name "Kijung-iM"
           git add whatap-docs.json
