@@ -28,9 +28,17 @@ jobs:
         run: |
           poetry install
 
+      - name: Activate virtual environment
+        run: source $HOME/.poetry/env
+
+      - name: Install Scrapy
+        run: |
+          poetry add scrapy
+
       - name: Run scrapy spider
         run: |
-          scrapy runspider --set FEED_EXPORT_ENCODING=utf-8 --set FEED_EXPORT_INDENT=2 main.py -o whatap-docs.json
+          poetry run scrapy runspider --set FEED_EXPORT_ENCODING=utf-8 --set FEED_EXPORT_INDENT=2 main.py -o whatap-docs.json
+
       - name: Update extracted data
         run: |
           cp path/to/your/extracted/whatap-docs.json .
