@@ -19,15 +19,63 @@ embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
 with open('whatap-docs.json', 'r') as file:
     json_data = json.load(file)
 
-# text = json.dumps(json_data[0], ensure_ascii=False)
-# print(text)
+# whatap_docs_temp 테이블 삭제
+def drop_whatap_docs_temp_table():
+    query = "DROP TABLE IF EXISTS whatap_docs_temp;"
+    response = supabase.query(query)
+    if response.error:
+        print("테이블 삭제 중 오류 발생:", response.error)
 
-# doc_result = embeddings.embed_documents([text])
-# print(doc_result)
+# whatap_docs_temp 테이블 생성
+def create_whatap_docs_temp_table():
+    query = """
+    CREATE EXTENSION IF NOT EXISTS vector;
+    CREATE TABLE IF NOT EXISTS whatap_docs_temp (id uuid PRIMARY KEY, metadata jsonb, embedding vector(1536));
+    CREATE OR REPLACE function match_whatap_docs_temp (
+        query_embedding vector(1536),
+        similarity_threshold float,
+        match_count int
+    )
+    returns TABLE (id uuid, metadata jsonb, similarity float)
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+        return query
+        SELECT whatap_docs_temp.id, whatap_docs_temp.metadata, 1 - (whatap_docs_temp.embedding <=> query_embedding) AS similarity
+        FROM whatap_docs_temp
+        WHERE 1 - (whatap_docs_temp.embedding <=> query_embedding) > similarity_threshold
+        ORDER BY whatap_docs_temp.embedding <=> query_embedding
+        LIMIT match_count;
+    END; $$;
+    """
+    response = supabase.query(query)
+    if response.error:
+        print("테이블 생성 중 오류 발생:", response.error)
 
+# whatap_docs 테이블을 whatap_docs_temporary로 이름 변경
+def rename_whatap_docs_table():
+    query = "ALTER TABLE whatap_docs RENAME TO whatap_docs_temporary;"
+    response = supabase.query(query)
+    if response.error:
+        print("테이블 이름 변경 중 오류 발생:", response.error)
+
+# whatap_docs_temp 테이블을 whatap_docs로 이름 변경
+def rename_temp_to_whatap_docs_table():
+    query = "ALTER TABLE whatap_docs_temp RENAME TO whatap_docs;"
+    response = supabase.query(query)
+    if response.error:
+        print("테이블 이름 변경 중 오류 발생:", response.error)
+
+# whatap_docs_temporary 테이블 삭제
+def drop_whatap_docs_temporary_table():
+    query = "DROP TABLE IF EXISTS whatap_docs_temporary;"
+    response = supabase.query(query)
+    if response.error:
+        print("테이블 삭제 중 오류 발생:", response.error)
 
 # 데이터 삽입 함수 정의
 def insert_data(data):
+    i = 1
     for doc in data:
         # UUID 생성
         id = str(uuid4())
@@ -43,9 +91,19 @@ def insert_data(data):
         response = supabase.table('whatap_docs_temp').insert(insert_data).execute()
         metadata_json = json.loads(insert_data['metadata'])
         url = metadata_json.get('url')
-        print(f"새로운 행이 성공적으로 삽입되었습니다! URL: {url}")
+        print(f"{i} :: 새로운 행이 성공적으로 삽입되었습니다! URL: {url}")
+        i = i + 1
     print("complete!!")
 
 
-# 데이터 삽입 함수 호출
+# 1. whatap_docs_temp 테이블을 생성한다. 만약 테이블이 이미 있으면 먼저 삭제한다.
+drop_whatap_docs_temp_table()
+create_whatap_docs_temp_table()
+# 2. whatap_docs_temp 에 docs 스크롤 데이터를 삽입한다. `insert_data(json_data)`
 insert_data(json_data)
+# 3. whatap_docs 테이블의 이름을 whatap_docs_temporary로 변경한다.
+rename_whatap_docs_table()
+# 4. whatap_docs_temp 테이블을 whatap_docs로 이름을 변경한다.
+rename_temp_to_whatap_docs_table()
+# 5. whatap_docs_temporary 테이블을 삭제한다.
+drop_whatap_docs_temporary_table()
