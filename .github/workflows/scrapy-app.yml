@@ -37,10 +37,6 @@ jobs:
         run: |
           poetry install
 
-      - name: Install Scrapy
-        run: |
-          poetry add scrapy
-
       - name: Run scrapy spider
         run: |
           python store.py
