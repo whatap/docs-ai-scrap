@@ -1,4 +1,4 @@
-name: Scrapy CI
+name: Update Vector DB
 
 on:
   # schedule:
@@ -43,13 +43,4 @@ jobs:
 
       - name: Run scrapy spider
         run: |
-          poetry run scrapy runspider --set FEED_EXPORT_ENCODING=utf-8 --set FEED_EXPORT_INDENT=2 main.py -o whatap-docs.json
-
-      - name: Move extracted data
-        run: |
-          mv whatap-docs.json ./whatap-docs-temp.json
-          git config --global user.email "kj.im@whatap.io"
-          git config --global user.name "Kijung-iM"
-          git add whatap-docs-temp.json
-          git commit -m "Update extracted data"
-          git push origin main
+          python store.py
