@@ -21,10 +21,6 @@ jobs:
       - name: Check out the code
         uses: actions/checkout@v2
 
-      - name: Delete existing extracted data
-        run: |
-          rm -f whatap-docs.json
-
       - name: Install Python
         uses: actions/setup-python@v2
         with:
