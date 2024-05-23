@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "docs-scrap"
+name = "docs-ai-scrap"
 version = "0.1.0"
 description = ""
 authors = ["whatap-docs <kj.im@whatap.io>"]
