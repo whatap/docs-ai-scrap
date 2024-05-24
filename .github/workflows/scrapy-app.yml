@@ -1,5 +1,4 @@
 name: Update Vector DB
-
 on:
   # schedule:
     # 자동으로 매일 자정에 실행하도록 설정 (UTC 시간 기준)
@@ -13,24 +12,24 @@ on:
       name:
         description: "Deployment?"
         default: "WhaTap"
-
 jobs:
   crawl:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the code
         uses: actions/checkout@v2
-
       - name: Install Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
 
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
+          poetry install
+          poetry install openai
       - name: Run scrapy spider
         run: |
           python store.py
