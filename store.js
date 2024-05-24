@@ -3,6 +3,9 @@ const { v4: uuid } = require('uuid');
 const OpenAI = require('openai');
 const { createClient } = require('@supabase/supabase-js');
 
+console.log(process.env.SUPABASE_URL)
+console.log(process.env.SUPABASE_API_KEY)
+
 // Supabase 연결 설정
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_API_KEY);
 
