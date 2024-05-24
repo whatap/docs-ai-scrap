@@ -28,8 +28,14 @@ jobs:
 
       - name: Install dependencies
         run: |
-          poetry install
+          poetry add python@^3.9
+          poetry add openai@^1.11.0
+          poetry add uuid@^1.30
+          poetry add python-dotenv@^1.0.1
+          poetry add langchain-openai@^0.1.3
+          poetry add poetry-dotenv@^0.4.0
+          poetry add supabase@^2.4.2
 
-      - name: Run scrapy spider
+      - name: UPDATE Supabase
         run: |
           python store.py
