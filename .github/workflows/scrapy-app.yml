@@ -29,7 +29,7 @@ jobs:
       - name: Install dependencies
         run: |
           poetry install
-          poetry install openai
+
       - name: Run scrapy spider
         run: |
           python store.py
