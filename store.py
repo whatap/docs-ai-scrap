@@ -2,16 +2,17 @@ import os
 from uuid import uuid4
 import json
 import random
+import openai
 from langchain_openai import OpenAIEmbeddings
 from supabase import create_client, Client
 
 # Supabase 연결 설정
-url = os.getenv("SUPABASE_URL")
-key = os.getenv("SUPABASE_API_KEY")
-supabase = create_client(url, key)
+url: str = os.environ.get("SUPABASE_URL")
+key: str = os.environ.get("SUPABASE_API_KEY")
+supabase: Client = create_client(url, key)
 
 # OpenAI 연결
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = os.environ["OPENAI_API_KEY"]
 embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
 
 # 외부 JSON 파일 읽기
