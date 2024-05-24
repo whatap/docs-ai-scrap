@@ -28,7 +28,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          poetry add python@^3.9
           poetry add openai@^1.11.0
           poetry add uuid@^1.30
           poetry add python-dotenv@^1.0.1
