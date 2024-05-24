@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@supabase/supabase-js": "^2.43.4",
+    "dotenv": "^16.4.5",
+    "openai": "^4.47.1",
+    "uuidv4": "^6.2.13"
+  }
+}
