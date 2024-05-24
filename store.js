@@ -32,7 +32,7 @@ async function insertData(data) {
         }
 
         const embeddingVector = embeddingResponse.data[0].embedding;
-        console.log(embeddingVector);
+        // console.log(embeddingVector);
         // 데이터베이스에 삽입할 데이터 준비
         const insertData = { id: id, metadata: text, embedding: embeddingVector };
         // console.log(insertData);
