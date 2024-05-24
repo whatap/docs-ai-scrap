@@ -4,12 +4,12 @@
 
 ## 주요 파일 구성
 
-- main.py: WhaTap Docs를 스크랩하는 주요 코드입니다.
-- store.py: 스크랩한 콘텐츠를 벡터 데이터에 업로드합니다. (supabase - whatap_docs 네임스페이스)
-- .env: OpenAI 및 supabase 관련 api key 정보를 입력하세요.
-  - OPENAI_API_KEY=""
-  - SUPABASE_URL=""
-  - SUPABASE_API_KEY=
+* main.py: WhaTap Docs를 스크랩하는 주요 코드입니다.
+* store.py: 스크랩한 콘텐츠를 벡터 데이터에 업로드합니다. (supabase - whatap\_docs 네임스페이스)
+* .env: OpenAI 및 supabase 관련 api key 정보를 입력하세요.
+  * OPENAI\_API\_KEY=""
+  * SUPABASE\_URL=""
+  * SUPABASE\_API\_KEY=
 
 ## scrapy 설치
 
@@ -21,10 +21,10 @@ pip install scrapy
 
 ## 주요 패키지 설치
 
-- scrapy
-- langchain-openai
-- supabase
-- uuid
+* scrapy
+* langchain-openai
+* supabase
+* uuid
 
 ## WhaTap Docs 스크랩하기
 
@@ -36,4 +36,4 @@ sh batch.sh
 
 ## 벡터 DB에 업로드
 
-store.py 파일을 실행해 콘텐츠를 벡터 DB에 업로드하세요.
+GitHub 액션을 트리거하세요. [Update Vector DB](https://github.com/whatap/docs-ai-scrap/actions/workflows/scrapy-app.yml)
