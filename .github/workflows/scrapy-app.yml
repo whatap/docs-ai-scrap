@@ -23,9 +23,9 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+      - name: UPDATE Database to Supabase
         env: 
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_API_KEY: ${{ secrets.SUPABASE_API_KEY }}
-      - name: UPDATE Database to Supabase
         run: node store.js
