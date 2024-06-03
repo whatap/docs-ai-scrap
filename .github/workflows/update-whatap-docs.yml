@@ -28,9 +28,6 @@ jobs:
         run: |
           poetry install
 
-      - name: Activate virtual environment
-        run: source $HOME/.poetry/env
-
       - name: Install Scrapy
         run: |
           poetry add scrapy
