@@ -38,7 +38,7 @@ jobs:
 
       - name: Update extracted data
         run: |
-          cp path/to/your/extracted/whatap-docs.json .
+          mv whatap-docs.json .
           git config --global user.email "kj.im@whatap.io"
           git config --global user.name "Kijung-iM"
           git add whatap-docs.json
