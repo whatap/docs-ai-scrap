@@ -3,7 +3,6 @@ import subprocess
 import os
 import psycopg2
 from typing import Optional
-from scrapy.crawler import CrawlerProcess
 
 
 def get_env(key: str) -> Optional[str]:
