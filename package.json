@@ -6,5 +6,6 @@
     "p-limit": "^5.0.0",
     "uuidv4": "^6.2.13"
   },
-  "type": "module"
+  "type": "module",
+  "packageManager": "yarn@4.3.0"
 }

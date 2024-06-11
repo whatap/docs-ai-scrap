@@ -54,8 +54,6 @@ def run_ddl(conn: psycopg2.extensions.connection) -> None:
     finally:
         if cursor:
             cursor.close()
-        if conn:
-            conn.close()
 
 
 def promote_temp_table_to_main_table(conn: psycopg2.extensions.connection) -> None:
