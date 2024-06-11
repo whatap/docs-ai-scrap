@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: docs-ai-scrap-job
+  namespace: mgmt
+spec:
+  backoffLimit: 4
+  template:
+    metadata:
+      name: docs-ai-scrap-job
+    spec:
+      containers:
+        - name: docs-ai-scrap-container
+          image: 592247757306.dkr.ecr.ap-northeast-2.amazonaws.com/docs-ai-scrap:latest
+          envFrom:
+            - secretRef:
+                name: docs-ai-scrap-secret
+      restartPolicy: OnFailure
