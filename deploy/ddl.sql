@@ -15,4 +15,8 @@ CREATE OR REPLACE function match_whatap_docs_temp (
     WHERE 1 - (whatap_docs_temp.embedding <=> query_embedding) > similarity_threshold
     ORDER BY whatap_docs_temp.embedding <=> query_embedding
     LIMIT match_count;
-  END; $$;
+  END; $$
+
+CREATE INDEX IF NOT EXISTS idx_l2_ops ON whatap_docs USING hnsw (embedding vector_l2_ops);
+CREATE INDEX IF NOT EXISTS idx_ip_ops ON whatap_docs USING hnsw (embedding vector_ip_ops);
+CREATE INDEX IF NOT EXISTS idx_cosine_ops ON whatap_docs USING hnsw (embedding vector_cosine_ops);

@@ -14,5 +14,5 @@ spec:
           image: 592247757306.dkr.ecr.ap-northeast-2.amazonaws.com/docs-ai-scrap:latest
           envFrom:
             - secretRef:
-                name: docs-ai-scrap-secret
+                name: chatbot-ai-secret
       restartPolicy: OnFailure
