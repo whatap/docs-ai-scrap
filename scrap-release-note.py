@@ -1,9 +1,10 @@
 import scrapy
+import re
 
 class ReleaseSpider(scrapy.Spider):
     name = 'whatap-release'
     start_urls = [ 
-        'https://docs.whatap.io/release-notes/service/service-2_0_x'
+        'https://docs.whatap.io/release-notes/java/java-2_2_36',
     ]
 
     def remove_zero_width_space(self, text):
@@ -29,8 +30,8 @@ class ReleaseSpider(scrapy.Spider):
                 item["category"] = category
             
             if next_sibling_ul:
-              details = self.remove_zero_width_space(next_sibling_ul.get())
-            #   details = [self.remove_zero_width_space(d) for d in next_sibling_ul.getall()]
+              details_content = self.remove_zero_width_space(next_sibling_ul.get())
+              details = re.sub('<p><img decoding=\\"async\\" loading=\\"lazy\\" src=\\"([^>]+?)\\" width=\\"(\d+)\\" height=\\"(\d+)\\" class=\\"([^>]+)?\\"></p>\\n', '', details_content)
               item["details"] = details
             items.append(item)
         return items
