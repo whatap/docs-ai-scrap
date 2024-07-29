@@ -1,21 +1,43 @@
 import scrapy
 import re
+from datetime import datetime
 
 class ReleaseSpider(scrapy.Spider):
     name = 'whatap-release'
     start_urls = [ 
-        # 'https://docs.whatap.io/release-notes/java/java-2_2_36',
-        # 'https://docs.whatap.io/release-notes/java/java-2_2_35',
-        # 'https://docs.whatap.io/release-notes/java/java-2_2_34',
-        'https://docs.whatap.io/release-notes/java/java-2_2_33',
-    #     'https://docs.whatap.io/release-notes/java/java-2_2_32',
-    #     'https://docs.whatap.io/release-notes/java/java-2_2_31',
-    #     'https://docs.whatap.io/release-notes/java/java-2_2_30',
-    #     'https://docs.whatap.io/release-notes/java/java-2_2_29',
-    #     'https://docs.whatap.io/release-notes/java/java-2_2_28',
-    #     'https://docs.whatap.io/release-notes/java/java-2_2_27',
-    #     'https://docs.whatap.io/release-notes/java/java-2_2_26'
+        'https://docs.whatap.io/en/release-notes/java/java-2_2_36',
+        'https://docs.whatap.io/en/release-notes/java/java-2_2_35',
+        'https://docs.whatap.io/en/release-notes/java/java-2_2_34',
+        'https://docs.whatap.io/en/release-notes/java/java-2_2_33',
+        'https://docs.whatap.io/en/release-notes/java/java-2_2_32',
+        'https://docs.whatap.io/en/release-notes/java/java-2_2_31',
+        'https://docs.whatap.io/en/release-notes/java/java-2_2_30',
+        'https://docs.whatap.io/en/release-notes/java/java-2_2_29',
+        'https://docs.whatap.io/en/release-notes/java/java-2_2_28',
+        'https://docs.whatap.io/en/release-notes/java/java-2_2_27',
+        'https://docs.whatap.io/en/release-notes/java/java-2_2_26'
     ]
+
+    def convert_date(self, date_str):
+        # 각 형식에 대한 패턴 정의
+        patterns = [
+            ('%B %d, %Y', '%Y-%m-%d'),  # 'May 28, 2024'
+            ('%Y년 %m월 %d일', '%Y-%m-%d'),  # '2024년 05월 28일'
+            ('%Y年%m月%d日', '%Y-%m-%d')  # '2024年05月28日'
+        ]
+        
+        # 패턴에 따라 변환 시도
+        for input_pattern, output_pattern in patterns:
+            try:
+                # 문자열을 datetime 객체로 변환
+                date_obj = datetime.strptime(date_str, input_pattern)
+                # datetime 객체를 원하는 형식의 문자열로 변환
+                return date_obj.strftime(output_pattern)
+            except ValueError:
+                # 패턴이 맞지 않으면 다음 패턴으로 이동
+                continue
+        # 모든 패턴이 맞지 않으면 에러 메시지 반환
+        return "Date format not recognized"
 
     def start_requests(self):
         for url in self.start_urls:
@@ -31,7 +53,7 @@ class ReleaseSpider(scrapy.Spider):
     def extract_change_items(self, node, ver, prodName, category):
         items = []
         next_sibling_ul = node.xpath('(following-sibling::*[1][self::ul] | following-sibling::*[1][self::p[not(img)]])')
-        if node.xpath('( .//code[@class="Fixed"] | .//code[@class="Changed"] | .//code[@class="Feature"] | .//code[@class="Deprecated"] | .//code[@class="New"] )'):
+        if node.xpath('( .//code[@class="Fixed"] | .//code[@class="Changed"] | .//code[@class="Feature"] | .//code[@class="Deprecated"] | .//code[@class="Deprecate"] | .//code[@class="New"] )'):
             changetype = self.remove_zero_width_space(node.xpath('.//code/text()').get())
             # desc = [self.remove_zero_width_space(d) for d in node.getall()]
             desc = self.remove_zero_width_space(node.get())
@@ -59,7 +81,7 @@ class ReleaseSpider(scrapy.Spider):
         for section in sections:
             ver = section.xpath('.//h2/text()').get()
             dateStr = section.xpath('.//h2/following-sibling::p[1]/text()').get()
-            date = dateStr.replace('년 ', '-').replace('월 ', '-').replace('일', '')
+            date = self.convert_date(dateStr)
             nodes = section.xpath('.//div[@class="indentTab"]/*')
             prodName = None
             category = None
@@ -95,7 +117,7 @@ class ReleaseSpider(scrapy.Spider):
     def parseagent(self, response):
         header = self.remove_zero_width_space(response.xpath('//header/h1/text()').get())
         dateStr = self.remove_zero_width_space(response.xpath('.//header/following-sibling::p[1]/text()').get())
-        date = dateStr.replace('년 ', '-').replace('월 ', '-').replace('일', '')
+        date = self.convert_date(dateStr)
         ver = re.search('v[\d\.]+', header).group()
         prodName = header.replace(ver, '').strip()
 
