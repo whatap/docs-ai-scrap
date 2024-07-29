@@ -5,17 +5,15 @@ from datetime import datetime
 class ReleaseSpider(scrapy.Spider):
     name = 'whatap-release'
     start_urls = [ 
-        'https://docs.whatap.io/en/release-notes/java/java-2_2_36',
-        'https://docs.whatap.io/en/release-notes/java/java-2_2_35',
-        'https://docs.whatap.io/en/release-notes/java/java-2_2_34',
-        'https://docs.whatap.io/en/release-notes/java/java-2_2_33',
-        'https://docs.whatap.io/en/release-notes/java/java-2_2_32',
-        'https://docs.whatap.io/en/release-notes/java/java-2_2_31',
-        'https://docs.whatap.io/en/release-notes/java/java-2_2_30',
-        'https://docs.whatap.io/en/release-notes/java/java-2_2_29',
-        'https://docs.whatap.io/en/release-notes/java/java-2_2_28',
-        'https://docs.whatap.io/en/release-notes/java/java-2_2_27',
-        'https://docs.whatap.io/en/release-notes/java/java-2_2_26'
+        'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_98',
+        'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_97',
+        'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_96',
+        'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_95',
+        'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_94',
+        'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_90',
+        'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_89',
+        'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_88',
+        'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_86',
     ]
 
     def convert_date(self, date_str):
@@ -52,7 +50,7 @@ class ReleaseSpider(scrapy.Spider):
 
     def extract_change_items(self, node, ver, prodName, category):
         items = []
-        next_sibling_ul = node.xpath('(following-sibling::*[1][self::ul] | following-sibling::*[1][self::p[not(img)]])')
+        next_sibling_ul = node.xpath('(following-sibling::*[1][self::ul] | following-sibling::*[1][self::blockquote] | following-sibling::*[1][self::p[not(img)]])')
         if node.xpath('( .//code[@class="Fixed"] | .//code[@class="Changed"] | .//code[@class="Feature"] | .//code[@class="Deprecated"] | .//code[@class="Deprecate"] | .//code[@class="New"] )'):
             changetype = self.remove_zero_width_space(node.xpath('.//code/text()').get())
             # desc = [self.remove_zero_width_space(d) for d in node.getall()]
