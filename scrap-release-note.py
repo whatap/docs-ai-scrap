@@ -1,19 +1,21 @@
 import scrapy
 import re
 from datetime import datetime
+import json
 
 class ReleaseSpider(scrapy.Spider):
     name = 'whatap-release'
-    start_urls = [ 
-        'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_98',
-        'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_97',
-        'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_96',
-        'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_95',
-        'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_94',
-        'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_90',
-        'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_89',
-        'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_88',
-        'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_86',
+    start_urls = [
+        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_3_0'
+        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_9',
+        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_8',
+        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_7',
+        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_6',
+        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_5',
+        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_4',
+        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_3',
+        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_2',
+        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_1',
     ]
 
     def convert_date(self, date_str):
@@ -51,9 +53,8 @@ class ReleaseSpider(scrapy.Spider):
     def extract_change_items(self, node, ver, prodName, category):
         items = []
         next_sibling_ul = node.xpath('(following-sibling::*[1][self::ul] | following-sibling::*[1][self::blockquote] | following-sibling::*[1][self::p[not(img)]])')
-        if node.xpath('( .//code[@class="Fixed"] | .//code[@class="Changed"] | .//code[@class="Feature"] | .//code[@class="Deprecated"] | .//code[@class="Deprecate"] | .//code[@class="New"] )'):
+        if node.xpath('( .//code[@class="Fixed"] | .//code[@class="Changed"] | .//code[@class="Change"] | .//code[@class="Feature"] | .//code[@class="Deprecated"] | .//code[@class="Deprecate"] | .//code[@class="New"] )'):
             changetype = self.remove_zero_width_space(node.xpath('.//code/text()').get())
-            # desc = [self.remove_zero_width_space(d) for d in node.getall()]
             desc = self.remove_zero_width_space(node.get())
             hashid = ver.lower().replace('.', '').replace(' ', '-')
             item = {
@@ -67,9 +68,9 @@ class ReleaseSpider(scrapy.Spider):
                 item["category"] = category
             
             if next_sibling_ul:
-              details_content = self.remove_zero_width_space(next_sibling_ul.get())
-              details = re.sub('<p><img decoding=\\"async\\" loading=\\"lazy\\" src=\\"([^>]+?)\\" width=\\"(\d+)\\" height=\\"(\d+)\\" class=\\"([^>]+)?\\"></p>\\n', '', details_content)
-              item["details"] = details
+                details_content = self.remove_zero_width_space(next_sibling_ul.get())
+                details = re.sub('<p><img decoding=\\"async\\" loading=\\"lazy\\" src=\\"([^>]+?)\\" width=\\"(\d+)\\" height=\\"(\d+)\\" class=\\"([^>]+)?\\"></p>\\n', '', details_content)
+                item["details"] = details
             items.append(item)
         return items
 
@@ -116,7 +117,10 @@ class ReleaseSpider(scrapy.Spider):
         header = self.remove_zero_width_space(response.xpath('//header/h1/text()').get())
         dateStr = self.remove_zero_width_space(response.xpath('.//header/following-sibling::p[1]/text()').get())
         date = self.convert_date(dateStr)
-        ver = re.search('v[\d\.]+', header).group()
+        if 'xos' in response.url:
+            ver = re.search('v[\d\.]+\w', header).group()
+        else:
+            ver = re.search('v[\d\.]+', header).group()
         prodName = header.replace(ver, '').strip()
 
         # check section
