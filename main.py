@@ -64,8 +64,7 @@ class Coolspider(SitemapSpider):
         ('https://docs.whatap.io/faq', 'parse'),
         ('https://docs.whatap.io/glossary', 'parse'),
         ('https://docs.whatap.io/reference/', 'parse'),
-        ('https://docs.whatap.io/feature/', 'parse'),
-        ('https://docs.whatap.io/openapi-spec', 'parse'),
+        ('https://docs.whatap.io/feature/', 'parse')
     ]
 
     def parse(self, response):
