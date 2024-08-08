@@ -1,4 +1,4 @@
-'https://docs.whatap.io/release-notes/java/java-2_2_37'
+'https://docs.whatap.io/release-notes/java/java-2_2_37',
 'https://docs.whatap.io/release-notes/java/java-2_2_36',
 'https://docs.whatap.io/release-notes/java/java-2_2_35',
 'https://docs.whatap.io/release-notes/java/java-2_2_34',
@@ -58,7 +58,7 @@
 'https://docs.whatap.io/release-notes/python/python-1_5_3',
 'https://docs.whatap.io/release-notes/python/python-1_5_2',
 
-'https://docs.whatap.io/release-notes/dotnet/dotnet-2_3_0'
+'https://docs.whatap.io/release-notes/dotnet/dotnet-2_3_0',
 'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_9',
 'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_8',
 'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_7',

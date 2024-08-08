@@ -25,6 +25,7 @@ class Coolspider(SitemapSpider):
         ('https://docs.whatap.io/kubernetes/', 'parse'),
         ('https://docs.whatap.io/postgresql/', 'parse'),
         ('https://docs.whatap.io/oracle/', 'parse'),
+        ('https://docs.whatap.io/oracle-pro/', 'parse'),
         ('https://docs.whatap.io/mysql/', 'parse'),
         ('https://docs.whatap.io/mssql/', 'parse'),
         ('https://docs.whatap.io/tibero/', 'parse'),
@@ -63,6 +64,8 @@ class Coolspider(SitemapSpider):
         ('https://docs.whatap.io/faq', 'parse'),
         ('https://docs.whatap.io/glossary', 'parse'),
         ('https://docs.whatap.io/reference/', 'parse'),
+        ('https://docs.whatap.io/feature/', 'parse'),
+        ('https://docs.whatap.io/openapi-spec', 'parse'),
     ]
 
     def parse(self, response):

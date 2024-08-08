@@ -6,16 +6,7 @@ import json
 class ReleaseSpider(scrapy.Spider):
     name = 'whatap-release'
     start_urls = [
-        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_3_0'
-        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_9',
-        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_8',
-        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_7',
-        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_6',
-        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_5',
-        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_4',
-        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_3',
-        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_2',
-        'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_1',
+        'https://docs.whatap.io/release-notes/service/service-2_7_x',
     ]
 
     def convert_date(self, date_str):
