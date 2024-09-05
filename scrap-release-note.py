@@ -6,7 +6,23 @@ import json
 class ReleaseSpider(scrapy.Spider):
     name = 'whatap-release'
     start_urls = [
-        'https://docs.whatap.io/release-notes/service/service-2_7_x',
+        'https://docs.whatap.io/release-notes/python/python-1_6_9',
+        'https://docs.whatap.io/release-notes/python/python-1_6_8',
+        'https://docs.whatap.io/release-notes/python/python-1_6_7',
+        'https://docs.whatap.io/release-notes/python/python-1_6_6',
+        'https://docs.whatap.io/release-notes/python/python-1_6_5',
+        'https://docs.whatap.io/release-notes/python/python-1_6_4',
+        'https://docs.whatap.io/release-notes/python/python-1_6_3',
+        'https://docs.whatap.io/release-notes/python/python-1_6_2',
+        'https://docs.whatap.io/release-notes/python/python-1_6_1',
+        'https://docs.whatap.io/release-notes/python/python-1_6_0',
+        'https://docs.whatap.io/release-notes/python/python-1_5_9',
+        'https://docs.whatap.io/release-notes/python/python-1_5_8',
+        'https://docs.whatap.io/release-notes/python/python-1_5_6',
+        'https://docs.whatap.io/release-notes/python/python-1_5_5',
+        'https://docs.whatap.io/release-notes/python/python-1_5_4',
+        'https://docs.whatap.io/release-notes/python/python-1_5_3',
+        'https://docs.whatap.io/release-notes/python/python-1_5_2'
     ]
 
     def convert_date(self, date_str):
@@ -71,6 +87,7 @@ class ReleaseSpider(scrapy.Spider):
         for section in sections:
             ver = section.xpath('.//h2/text()').get()
             dateStr = section.xpath('.//h2/following-sibling::p[1]/text()').get()
+            # dateStr = self.remove_zero_width_space(response.xpath('.//header/following-sibling::p[1]/text()').get())
             date = self.convert_date(dateStr)
             nodes = section.xpath('.//div[@class="indentTab"]/*')
             prodName = None
@@ -96,8 +113,10 @@ class ReleaseSpider(scrapy.Spider):
                 elif tag == 'p':
                     items.extend(self.extract_change_items(node, ver, prodName, category))
 
+            myurl = response.url.replace('https://docs.whatap.io/', '').replace('https://whatap.github.com/whatap-docs/', '')
+            
             result = {
-                "url": response.url,
+                "url": myurl,
                 "ver": ver,
                 "date": date,
                 "Lists": items
@@ -147,9 +166,11 @@ class ReleaseSpider(scrapy.Spider):
                         items.extend(self.extract_change_items(list_item, ver, prodName, category))
             if tag == 'hr':
                 pass
+        
+        myurl = response.url.replace('https://docs.whatap.io/', '').replace('https://whatap.github.com/whatap-docs/', '')
 
         result = {
-            "url": response.url,
+            "url": myurl,
             "ver": ver,
             "date": date,
             "Lists": items
