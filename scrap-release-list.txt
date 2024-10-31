@@ -1,3 +1,4 @@
+'https://docs.whatap.io/release-notes/java/java-2_2_39',
 'https://docs.whatap.io/release-notes/java/java-2_2_38',
 'https://docs.whatap.io/release-notes/java/java-2_2_37',
 'https://docs.whatap.io/release-notes/java/java-2_2_36',
@@ -29,12 +30,14 @@
 'https://docs.whatap.io/release-notes/java-batch/java-batch-2_2_19'
 
 
+'https://docs.whatap.io/release-notes/php/php-2_8_2',
 'https://docs.whatap.io/release-notes/php/php-2_8_1',
 'https://docs.whatap.io/release-notes/php/php-2_8_0',
 'https://docs.whatap.io/release-notes/php/php-2_7_2',
 'https://docs.whatap.io/release-notes/php/php-2_7_1',
 'https://docs.whatap.io/release-notes/php/php-2_7_0',
 
+'https://docs.whatap.io/release-notes/nodejs/nodejs-0_5_2',
 'https://docs.whatap.io/release-notes/nodejs/nodejs-0_5_1',
 'https://docs.whatap.io/release-notes/nodejs/nodejs-0_5_0',
 'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_98',
@@ -47,6 +50,8 @@
 'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_88',
 'https://docs.whatap.io/release-notes/nodejs/nodejs-0_4_86',
 
+'https://docs.whatap.io/release-notes/python/python-1_7_1',
+'https://docs.whatap.io/release-notes/python/python-1_7_0',
 'https://docs.whatap.io/release-notes/python/python-1_6_10',
 'https://docs.whatap.io/release-notes/python/python-1_6_9',
 'https://docs.whatap.io/release-notes/python/python-1_6_8',
@@ -66,6 +71,8 @@
 'https://docs.whatap.io/release-notes/python/python-1_5_3',
 'https://docs.whatap.io/release-notes/python/python-1_5_2'
 
+'https://docs.whatap.io/release-notes/dotnet/dotnet-2_3_4',
+'https://docs.whatap.io/release-notes/dotnet/dotnet-2_3_3',
 'https://docs.whatap.io/release-notes/dotnet/dotnet-2_3_2',
 'https://docs.whatap.io/release-notes/dotnet/dotnet-2_3_1',
 'https://docs.whatap.io/release-notes/dotnet/dotnet-2_3_0',
@@ -80,6 +87,7 @@
 'https://docs.whatap.io/release-notes/dotnet/dotnet-2_2_1'
 
 
+'https://docs.whatap.io/release-notes/golang/golang-0_4_3',
 'https://docs.whatap.io/release-notes/golang/golang-0_4_2',
 'https://docs.whatap.io/release-notes/golang/golang-0_4_1',
 'https://docs.whatap.io/release-notes/golang/golang-0_4_0',
@@ -88,6 +96,9 @@
 'https://docs.whatap.io/release-notes/golang/golang-0_3_1',
 'https://docs.whatap.io/release-notes/golang/golang-0_3_0'
 
+'https://docs.whatap.io/release-notes/server/server-2_7_0',
+'https://docs.whatap.io/release-notes/server/server-2_6_9',
+'https://docs.whatap.io/release-notes/server/server-2_6_8',
 'https://docs.whatap.io/release-notes/server/server-2_6_7',
 'https://docs.whatap.io/release-notes/server/server-2_6_6',
 'https://docs.whatap.io/release-notes/server/server-2_6_5',
@@ -106,8 +117,15 @@
 'https://docs.whatap.io/release-notes/server/server-2_5_1',
 'https://docs.whatap.io/release-notes/server/server-2_5_0'
 
-'https://docs.whatap.io/release-notes/server/server-aix-1_2_7'
+'https://docs.whatap.io/release-notes/server-aix/server-aix-1_3_5',
+'https://docs.whatap.io/release-notes/server-aix/server-aix-1_3_4',
+'https://docs.whatap.io/release-notes/server-aix/server-aix-1_2_7'
 
+'https://docs.whatap.io/release-notes/server-solaris/server-solaris-1_3_5',
+'https://docs.whatap.io/release-notes/server-solaris/server-solaris-1_3_4'
+
+'https://docs.whatap.io/release-notes/k8s/k8s-1_7_13',
+'https://docs.whatap.io/release-notes/k8s/k8s-1_7_12',
 'https://docs.whatap.io/release-notes/k8s/k8s-1_7_11',
 'https://docs.whatap.io/release-notes/k8s/k8s-1_7_10',
 'https://docs.whatap.io/release-notes/k8s/k8s-1_7_9',
@@ -134,6 +152,11 @@
 'https://docs.whatap.io/release-notes/k8s/k8s-1_5_0',
 'https://docs.whatap.io/release-notes/k8s/k8s-1_4_9'
 
+'https://docs.whatap.io/release-notes/db/dbx-2_1_2',
+'https://docs.whatap.io/release-notes/db/dbx-2_1_1',
+'https://docs.whatap.io/release-notes/db/dbx-2_1_0',
+'https://docs.whatap.io/release-notes/db/dbx-2_0_2',
+'https://docs.whatap.io/release-notes/db/dbx-2_0_1',
 'https://docs.whatap.io/release-notes/db/dbx-2_0_0',
 'https://docs.whatap.io/release-notes/db/dbx-1_9_5',
 'https://docs.whatap.io/release-notes/db/dbx-1_9_4',
