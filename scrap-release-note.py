@@ -6,7 +6,7 @@ import json
 class ReleaseSpider(scrapy.Spider):
     name = 'whatap-release'
     start_urls = [
-        'https://docs.whatap.io/release-notes/service/service-2_9_x'
+        'https://docs.whatap.io/release-notes/java/java-2_2_44',
     ]
 
     def convert_date(self, date_str):
@@ -146,6 +146,9 @@ class ReleaseSpider(scrapy.Spider):
                 lists = node.xpath('.//li')
                 if len(lists) == 1 and not lists.xpath('.//p'):
                     # li가 하나만 있고, li 안에 p가 없는 경우
+                    items.extend(self.extract_change_items(lists[0], ver, prodName, category))
+                elif len(lists) == 1 and lists.xpath('.//p'):
+                    # li가 하나만 있고, li 안에 p가 있는 경우
                     items.extend(self.extract_change_items(lists[0], ver, prodName, category))
                 elif len(lists) > 1:
                     # 일반적인 경우
