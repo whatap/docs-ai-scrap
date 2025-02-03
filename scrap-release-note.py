@@ -6,7 +6,8 @@ import json
 class ReleaseSpider(scrapy.Spider):
     name = 'whatap-release'
     start_urls = [
-        'https://docs.whatap.io/release-notes/java/java-2_2_44',
+        'https://docs.whatap.io/release-notes/server/server-2_7_7',
+        'https://docs.whatap.io/release-notes/server/server-2_7_6'
     ]
 
     def convert_date(self, date_str):
@@ -122,9 +123,9 @@ class ReleaseSpider(scrapy.Spider):
 
         # check section
         sections = response.xpath('//div[@class="theme-doc-markdown markdown"]/section')
-        if len(sections) > 0:
+        if (len(sections) > 0) and not 'server' in response.url:
             nodes = response.xpath('//div[@class="theme-doc-markdown markdown"]/section/*')
-        elif len(sections) == 0:
+        elif len(sections) == 0 or 'server' in response.url:
             nodes = response.xpath('//div[@class="theme-doc-markdown markdown"]/*')
 
         items = []
@@ -153,6 +154,7 @@ class ReleaseSpider(scrapy.Spider):
                 elif len(lists) > 1:
                     # 일반적인 경우
                     for list_item in lists.xpath('.//p'):
+                        print(list_item)
                         items.extend(self.extract_change_items(list_item, ver, prodName, category))
             if tag == 'hr':
                 pass
